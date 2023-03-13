@@ -11,10 +11,8 @@ from .fpn import FPN
 @NECKS.register_module()
 class PAFPN(FPN):
     """Path Aggregation Network for Instance Segmentation.
-
     This is an implementation of the `PAFPN in Path Aggregation Network
     <https://arxiv.org/abs/1803.01534>`_.
-
     Args:
         in_channels (List[int]): Number of input channels per scale.
         out_channels (int): Number of output channels (used at each scale)
@@ -28,7 +26,6 @@ class PAFPN(FPN):
             If True, it is equivalent to `add_extra_convs='on_input'`.
             If str, it specifies the source feature map of the extra convs.
             Only the following options are allowed
-
             - 'on_input': Last feat map of neck inputs (i.e. backbone feature).
             - 'on_lateral':  Last feature map after lateral convs.
             - 'on_output': The last output feature map after fpn convs.

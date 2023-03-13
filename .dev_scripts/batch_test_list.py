@@ -308,7 +308,7 @@ ssd = [
         metric=dict(bbox_mAP=25.5),
     ),
     dict(
-        config='configs/ssd/ssdlite_mobilenetv2_scratch_600e_coco.py',
+        config='configs/ssd/ssdlite_mobilenetv2_scratch_20e_utdac.py',
         checkpoint='ssdlite_mobilenetv2_scratch_600e_coco_20210629_110627-974d9307.pth',# noqa
         eval='bbox',
         metric=dict(bbox_mAP=21.3),

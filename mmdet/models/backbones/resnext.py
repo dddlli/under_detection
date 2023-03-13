@@ -6,7 +6,7 @@ from mmcv.cnn import build_conv_layer, build_norm_layer
 from ..builder import BACKBONES
 from ..utils import ResLayer
 from .resnet import Bottleneck as _Bottleneck
-from .resnet import ResNet
+from .resnet import ResNet, ResNetV1d
 
 
 class Bottleneck(_Bottleneck):
@@ -107,7 +107,7 @@ class Bottleneck(_Bottleneck):
 
 
 @BACKBONES.register_module()
-class ResNeXt(ResNet):
+class ResNeXt(ResNetV1d):
     """ResNeXt backbone.
 
     Args:

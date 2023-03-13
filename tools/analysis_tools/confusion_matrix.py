@@ -12,6 +12,7 @@ from mmdet.core.evaluation.bbox_overlaps import bbox_overlaps
 from mmdet.datasets import build_dataset
 from mmdet.utils import replace_cfg_vals, update_data_root
 
+plt.rc('font', family='Times New Roman')
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -42,17 +43,17 @@ def parse_args():
         type=float,
         default=None,
         help='nms IoU threshold, only applied when users want to change the'
-        'nms IoU threshold.')
+             'nms IoU threshold.')
     parser.add_argument(
         '--cfg-options',
         nargs='+',
         action=DictAction,
         help='override some settings in the used config, the key-value pair '
-        'in xxx=yyy format will be merged into config file. If the value to '
-        'be overwritten is a list, it should be like key="[a,b]" or key=a,b '
-        'It also allows nested list/tuple values, e.g. key="[(a,b),(c,d)]" '
-        'Note that the quotation marks are necessary and that no white space '
-        'is allowed.')
+             'in xxx=yyy format will be merged into config file. If the value to '
+             'be overwritten is a list, it should be like key="[a,b]" or key=a,b '
+             'It also allows nested list/tuple values, e.g. key="[(a,b),(c,d)]" '
+             'Note that the quotation marks are necessary and that no white space '
+             'is allowed.')
     args = parser.parse_args()
     return args
 
@@ -167,14 +168,15 @@ def plot_confusion_matrix(confusion_matrix,
 
     num_classes = len(labels)
     fig, ax = plt.subplots(
-        figsize=(0.5 * num_classes, 0.5 * num_classes * 0.8), dpi=180)
+        # figsize=(0.5 * num_classes, 0.5 * num_classes * 0.8), dpi=180)
+        figsize=(num_classes, num_classes), dpi=300)
     cmap = plt.get_cmap(color_theme)
     im = ax.imshow(confusion_matrix, cmap=cmap)
     plt.colorbar(mappable=im, ax=ax)
 
-    title_font = {'weight': 'bold', 'size': 12}
+    title_font = {'weight': 'bold', 'size': 10.5}
     ax.set_title(title, fontdict=title_font)
-    label_font = {'size': 10}
+    label_font = {'size': 10.5}
     plt.ylabel('Ground Truth Label', fontdict=label_font)
     plt.xlabel('Prediction Label', fontdict=label_font)
 
@@ -200,7 +202,7 @@ def plot_confusion_matrix(confusion_matrix,
     ax.tick_params(
         axis='x', bottom=False, top=True, labelbottom=False, labeltop=True)
     plt.setp(
-        ax.get_xticklabels(), rotation=45, ha='left', rotation_mode='anchor')
+        ax.get_xticklabels(), rotation=46, ha='left', rotation_mode='anchor')
 
     # draw confution matrix value
     for i in range(num_classes):
@@ -210,8 +212,8 @@ def plot_confusion_matrix(confusion_matrix,
                 i,
                 '{}%'.format(
                     int(confusion_matrix[
-                        i,
-                        j]) if not np.isnan(confusion_matrix[i, j]) else -1),
+                            i,
+                            j]) if not np.isnan(confusion_matrix[i, j]) else -1),
                 ha='center',
                 va='center',
                 color='w',
@@ -263,7 +265,8 @@ def main():
                                                   args.tp_iou_thr)
     plot_confusion_matrix(
         confusion_matrix,
-        dataset.CLASSES + ('background', ),
+        dataset.CLASSES + ('background',),
+        # dataset.CLASSES,
         save_dir=args.save_dir,
         show=args.show,
         color_theme=args.color_theme)

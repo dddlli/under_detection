@@ -1,0 +1,37 @@
+# grad_cam
+
+python vis_cam.py /root/underwater_detection/data/UTDAC2020/train2017/000004.jpg utdac_configs/tood_utdac/tood_resnext101_dcn_pafpn_20e_utdac.py /root/underwater_detection/work_dirs/tood_resnext101_dcn_pafpn_20e_utdac/epoch_7.pth --out-dir result
+python vis_cam.py /root/underwater_detection/data/UTDAC2020/train2017/000004.jpg utdac_configs/tood_utdac/tood_r50_fpn_1x_coco.py /root/underwater_detection/work_dirs/tood_r50_fpn_1x_coco/epoch_1.pth --out-dir result1
+python vis_cam.py /root/underwater_detection/data/UTDAC2020/val2017/003888.jpg utdac_configs/tood_utdac/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local.py /root/underwater_detection/work_dirs/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local/epoch_1.pth --out-dir result --score-thr 0.4
+python vis_cam.py /root/under_detection/data/UTDAC2020/val2017/003888.jpg utdac_configs/tood_utdac/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local.py /hy-tmp/tood_resnext101_dcnv2_pafpn_20e_utdac_blurpool_non_local/epoch_10.pth --out-dir result --score-thr 0.3 --target-layers 'backbone.layer3'
+
+# analyse_log
+
+python tools/analysis_tools/analyze_logs.py plot_curve /hy-tmp/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local/20230225_222411.log.json --out log_curve.png
+python tools/analysis_tools/analyze_logs.py plot_curve /hy-tmp/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local/20230225_222411.log.json --out loss.png --keys loss_cls loss_bbox --legend loss_cls loss_bbox
+
+#analyze_result
+
+python tools/analysis_tools/analyze_results.py utdac_configs/tood_utdac/tood_resnext101_dcnv2_fapafpn_20e_utdac_blurpool_non_local_optim.py result/tood_resnext101_optim_pafpn_optim.pkl result/ --show-score-thr 0.35
+
+# benchmark
+
+python -m torch.distributed.launch --nproc_per_node=1 --master_port=29500 tools/analysis_tools/benchmark.py utdac_configs/tood_utdac/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local.py /hy-tmp/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local/epoch_18.pth --launcher pytorch
+
+# confusion_matrix
+
+python tools/analysis_tools/confusion_matrix.py utdac_configs/tood_utdac/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local.py result.pkl coco_confusion_matrix/ --color-theme Blues
+
+
+# plot_pr_curve
+
+python tools/analysis_tools/plot_pr_curve.py utdac_configs/tood_utdac/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local.py result.pkl
+
+# test
+
+python test.py utdac_configs/tood_utdac/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local.py /hy-tmp/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local/epoch_18.pth --out ./result.pkl
+
+# browse_dataset
+
+python tools/misc/browse_dataset.py utdac_configs/tood_utdac/tood_resnext101_dcn_pafpn_20e_utdac_blurpool_non_local.py  --output-dir viz_dataset/
+

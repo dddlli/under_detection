@@ -69,11 +69,11 @@ def _traversed_config_file():
 
     # the `init_cfg` in 'centripetalnet', 'cornernet', 'cityscapes',
     # 'scratch' is None.
-    # the `init_cfg` in ssdlite(`ssdlite_mobilenetv2_scratch_600e_coco.py`)
+    # the `init_cfg` in ssdlite(`ssdlite_mobilenetv2_scratch_20e_utdac.py`)
     # is None
     # Please confirm `bockbone.init_cfg` is None first.
     ignores_folder += ['centripetalnet', 'cornernet', 'cityscapes', 'scratch']
-    ignores_file = ['ssdlite_mobilenetv2_scratch_600e_coco.py']
+    ignores_file = ['ssdlite_mobilenetv2_scratch_20e_utdac.py']
 
     for config_file_name in os.listdir(config_path):
         if config_file_name not in ignores_folder:

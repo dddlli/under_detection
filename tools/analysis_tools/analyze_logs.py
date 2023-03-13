@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
 
+plt.rc('font', family='Times New Roman')
+
 
 def cal_train_time(log_dicts, args):
     for i, log_dict in enumerate(log_dicts):
@@ -36,6 +38,8 @@ def cal_train_time(log_dicts, args):
 
 
 def plot_curve(log_dicts, args):
+    plt.rc('font', family='Times New Roman')
+    plt.figure(dpi=300)
     if args.backend is not None:
         plt.switch_backend(args.backend)
     sns.set_style(args.style)
@@ -152,7 +156,7 @@ def add_time_parser(subparsers):
         '--include-outliers',
         action='store_true',
         help='include the first value of every epoch when computing '
-        'the average time')
+             'the average time')
 
 
 def parse_args():

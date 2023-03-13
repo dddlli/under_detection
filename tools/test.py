@@ -158,7 +158,7 @@ def main():
     elif 'init_cfg' in cfg.model.backbone:
         cfg.model.backbone.init_cfg = None
 
-    if cfg.model.get('neck'):
+    if cfg.model.get('necks'):
         if isinstance(cfg.model.neck, list):
             for neck_cfg in cfg.model.neck:
                 if neck_cfg.get('rfp_backbone'):

@@ -1,0 +1,2 @@
+python train.py utdac_configs/tood_utdac/ssdlite_mobilenetv2_scratch_20e_utdac.py --work-dir /hy-tmp/ssdlite_mobilenetv2_scratch_20e_utdac \
+&& python train.py utdac_configs/tood_utdac/faster_rcnn_mobilev2_fpn_20e_utdac.py --work-dir /hy-tmp/faster_rcnn_mobilev2_fpn_20e_utdac
