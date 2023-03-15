@@ -46,6 +46,8 @@ from .yolof_head import YOLOFHead
 from .yolox_head import YOLOXHead
 from .atss_rpn_head import ATSSRPNHead
 
+from .lite_tood import LiteTOODHead
+
 __all__ = [
     'AnchorFreeHead', 'AnchorHead', 'GuidedAnchorHead', 'FeatureAdaption',
     'RPNHead', 'GARPNHead', 'RetinaHead', 'RetinaSepBNHead', 'GARetinaHead',
@@ -59,5 +61,5 @@ __all__ = [
     'DecoupledSOLOHead', 'CenterNetHead', 'YOLOXHead',
     'DecoupledSOLOLightHead', 'LADHead', 'TOODHead', 'MaskFormerHead',
     'Mask2FormerHead', 'SOLOV2Head', 'DDODHead', 'AscendAnchorHead',
-    'AscendRetinaHead', 'AscendSSDHead', 'ATSSRPNHead'
+    'AscendRetinaHead', 'AscendSSDHead', 'ATSSRPNHead', 'LiteTOODHead'
 ]

@@ -20,11 +20,19 @@ from .trident_resnet import TridentResNet
 from .resnet_optim import ResNet_Optim, ResNetV1d_Optim
 from .resnext_optim import ResNeXt_Optim
 
+from .dwt_mobilev2 import DWT_MobileNetV2
+from .dwt_efficientnet import DWTEfficientNet
+from .SReT import SReT
+from .vovnet import VoVNet
+from .efficientnet_lite import EfficientNetLite
+from .att_efficientnet_lite import AttEfficientNetLite
+
 __all__ = [
     'RegNet', 'ResNet', 'ResNetV1d', 'ResNeXt', 'SSDVGG', 'HRNet',
     'MobileNetV2', 'Res2Net', 'HourglassNet', 'DetectoRS_ResNet',
     'DetectoRS_ResNeXt', 'Darknet', 'ResNeSt', 'TridentResNet', 'CSPDarknet',
     'SwinTransformer', 'PyramidVisionTransformer',
     'PyramidVisionTransformerV2', 'EfficientNet',
-    'ResNet_Optim', 'ResNeXt_Optim'
+    'ResNet_Optim', 'ResNeXt_Optim', 'DWT_MobileNetV2', 'DWTEfficientNet',
+    'EfficientNetLite', 'AttEfficientNetLite'
 ]

@@ -20,6 +20,12 @@ from .transformer import (DetrTransformerDecoder, DetrTransformerDecoderLayer,
                           DynamicConv, PatchEmbed, Transformer, nchw_to_nlc,
                           nlc_to_nchw)
 
+from .activation import act_layers
+from .fusion import iAFF, AFF, DAF, MS_CAM
+from .gcn import _GlobalConvModule, _BoundaryRefineModule
+from .dwt import DWTPool2d
+from .deepwiseconv import DeepWiseConv
+
 __all__ = [
     'ResLayer', 'gaussian_radius', 'gen_gaussian_target',
     'DetrTransformerDecoderLayer', 'DetrTransformerDecoder', 'Transformer',
@@ -30,5 +36,6 @@ __all__ = [
     'adaptive_avg_pool2d', 'AdaptiveAvgPool2d', 'PatchEmbed', 'nchw_to_nlc',
     'nlc_to_nchw', 'pvt_convert', 'sigmoid_geometric_mean',
     'preprocess_panoptic_gt', 'DyReLU',
-    'get_uncertain_point_coords_with_randomness', 'get_uncertainty'
+    'get_uncertain_point_coords_with_randomness', 'get_uncertainty',
+    'iAFF', 'AFF', 'DAF', 'MS_CAM', 'DWTPool2d', 'DeepWiseConv'
 ]

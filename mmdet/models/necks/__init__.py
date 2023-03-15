@@ -22,10 +22,13 @@ from .fsfpn import FSFPN
 from .fspafpn import FSPAFPN
 from .cem import CEM
 from .safpn import SAFPN
+from .dwt_fpn import DWT_FPN
+from .att_fpn import ATTFPN
 
 __all__ = [
     'FPN', 'BFP', 'ChannelMapper', 'HRFPN', 'NASFPN', 'FPN_CARAFE', 'PAFPN',
     'NASFCOS_FPN', 'RFP', 'YOLOV3Neck', 'FPG', 'DilatedEncoder',
     'CTResNetNeck', 'SSDNeck', 'YOLOXPAFPN', 'DyHead',
-    'SSFPN', 'SSPAFPN', 'FSFPN', 'FSPAFPN', 'CEM', 'SAFPN'
+    'SSFPN', 'SSPAFPN', 'FSFPN', 'FSPAFPN', 'CEM', 'SAFPN', 'DWT_FPN',
+    'ATTFPN'
 ]
