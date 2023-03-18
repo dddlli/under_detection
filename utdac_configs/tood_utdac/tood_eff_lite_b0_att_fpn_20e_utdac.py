@@ -16,7 +16,7 @@ model = dict(
         pretrain=True
     ),
     neck=dict(
-        type='Att_FPN',
+        type='ATTFPN',
         in_channels=[40, 112, 320],
         out_channels=256,
         start_level=0,

@@ -26,6 +26,9 @@ from .gcn import _GlobalConvModule, _BoundaryRefineModule
 from .dwt import DWTPool2d
 from .deepwiseconv import DeepWiseConv
 
+from .eca import eca_layer
+from .eca_inverted_residual import ECA_InvertedResidual
+
 __all__ = [
     'ResLayer', 'gaussian_radius', 'gen_gaussian_target',
     'DetrTransformerDecoderLayer', 'DetrTransformerDecoder', 'Transformer',
@@ -37,5 +40,6 @@ __all__ = [
     'nlc_to_nchw', 'pvt_convert', 'sigmoid_geometric_mean',
     'preprocess_panoptic_gt', 'DyReLU',
     'get_uncertain_point_coords_with_randomness', 'get_uncertainty',
-    'iAFF', 'AFF', 'DAF', 'MS_CAM', 'DWTPool2d', 'DeepWiseConv'
+    'iAFF', 'AFF', 'DAF', 'MS_CAM', 'DWTPool2d', 'DeepWiseConv', 'eca_layer',
+    'ECA_InvertedResidual'
 ]

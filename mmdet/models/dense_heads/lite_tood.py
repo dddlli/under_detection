@@ -12,7 +12,7 @@ from mmdet.core.utils import filter_scores_and_topk
 from mmdet.models.utils import sigmoid_geometric_mean
 from ..builder import HEADS, build_loss
 from .atss_head import ATSSHead
-from ..utils import DeepWiseConv
+from ..utils import InvertedResidual
 
 
 class TaskDecomposition(nn.Module):
@@ -88,7 +88,7 @@ class TaskDecomposition(nn.Module):
 
 
 @HEADS.register_module()
-class LiteTOODHead(ATSSHead):
+class LITETOODHead(ATSSHead):
     """TOODHead used in `TOOD: Task-aligned One-stage Object Detection.
 
     <https://arxiv.org/abs/2108.07755>`_.
@@ -128,7 +128,7 @@ class LiteTOODHead(ATSSHead):
         self.num_dcn = num_dcn
         self.anchor_type = anchor_type
         self.epoch = 0  # which would be update in SetEpochInfoHook!
-        super(LiteTOODHead, self).__init__(num_classes, in_channels, **kwargs)
+        super(LITETOODHead, self).__init__(num_classes, in_channels, **kwargs)
 
         if self.train_cfg:
             self.initial_epoch = self.train_cfg.initial_epoch
@@ -159,9 +159,12 @@ class LiteTOODHead(ATSSHead):
                 #     padding=1,
                 #     conv_cfg=conv_cfg,
                 #     norm_cfg=self.norm_cfg)
-                DeepWiseConv(
-                    in_channel=chn,
-                    out_channel=self.feat_channels
+                InvertedResidual(
+                    in_channels=chn,
+                    out_channels=self.feat_channels,
+                    mid_channels=int(chn * 3),
+                    stride=1,
+                    kernel_size=3
                 )
             )
 
@@ -174,34 +177,22 @@ class LiteTOODHead(ATSSHead):
                                             self.stacked_convs * 8,
                                             self.conv_cfg, self.norm_cfg)
 
-        # self.tood_cls = nn.Conv2d(
-        #     self.feat_channels,
-        #     self.num_base_priors * self.cls_out_channels,
-        #     3,
-        #     padding=1)
-        self.tood_cls = DeepWiseConv(
+        self.tood_cls = nn.Conv2d(
             self.feat_channels,
             self.num_base_priors * self.cls_out_channels,
-        )
-        # self.tood_reg = nn.Conv2d(
-        #     self.feat_channels, self.num_base_priors * 4, 3, padding=1)
-        self.tood_reg = DeepWiseConv(
-            self.feat_channels,
-            self.num_base_priors * 4
-        )
+            3,
+            padding=1)
+        self.tood_reg = nn.Conv2d(
+            self.feat_channels, self.num_base_priors * 4, 3, padding=1)
 
         self.cls_prob_module = nn.Sequential(
             nn.Conv2d(self.feat_channels * self.stacked_convs,
                       self.feat_channels // 4, 1), nn.ReLU(inplace=True),
-            nn.Conv2d(self.feat_channels // 4, 1, 3, padding=1)
-            # DeepWiseConv(self.feat_channels // 4, 1)
-        )
+            nn.Conv2d(self.feat_channels // 4, 1, 3, padding=1))
         self.reg_offset_module = nn.Sequential(
             nn.Conv2d(self.feat_channels * self.stacked_convs,
                       self.feat_channels // 4, 1), nn.ReLU(inplace=True),
-            # nn.Conv2d(self.feat_channels // 4, 4 * 2, 3, padding=1)
-            DeepWiseConv(self.feat_channels // 4, 4 * 2)
-        )
+            nn.Conv2d(self.feat_channels // 4, 4 * 2, 3, padding=1))
 
         self.scales = nn.ModuleList(
             [Scale(1.0) for _ in self.prior_generator.strides])
@@ -209,8 +200,8 @@ class LiteTOODHead(ATSSHead):
     def init_weights(self):
         """Initialize weights of the head."""
         bias_cls = bias_init_with_prob(0.01)
-        # for m in self.inter_convs:
-        #     normal_init(m.conv, std=0.01)
+        for m in self.inter_convs:
+            normal_init(m, std=0.01)
         for m in self.cls_prob_module:
             if isinstance(m, nn.Conv2d):
                 normal_init(m, std=0.01)

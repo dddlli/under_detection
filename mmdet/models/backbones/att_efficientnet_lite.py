@@ -158,7 +158,8 @@ class MBConvBlock(nn.Module):
                 self._relu(self._se_reduce(x_squeezed)))
             x = torch.sigmoid(x_squeezed) * x
 
-        x = self.fuse_mode(x, identity)
+        # x = self.fuse_mode(x, identity)
+
 
         x = self._bn2(self._project_conv(x))
 
@@ -212,6 +213,7 @@ class AttEfficientNetLite(nn.Module):
                 kernel_size=3,
                 stride=2,
                 padding=1,
+                dilation=1,
                 bias=False),
             nn.BatchNorm2d(
                 num_features=out_channels, momentum=momentum, eps=epsilon),

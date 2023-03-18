@@ -9,7 +9,7 @@ checkpoint = 'https://download.openmmlab.com/mmclassification/v0/efficientnet/ef
 model = dict(
     type='TOOD',
     backbone=dict(
-        type='EfficientNet',
+        type='ECAEfficientNet',
         arch='b0',
         drop_path_rate=0.2,
         out_indices=(3, 4, 5),
@@ -18,7 +18,8 @@ model = dict(
             type='BN', requires_grad=True, eps=1e-3, momentum=0.01),
         norm_eval=False,
         init_cfg=dict(
-            type='Pretrained', prefix='backbone', checkpoint=checkpoint)),
+            type='Pretrained', prefix='backbone', checkpoint=checkpoint)
+    ),
     neck=dict(
         type='FPN',
         in_channels=[40, 112, 320],

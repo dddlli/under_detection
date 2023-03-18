@@ -22,10 +22,9 @@ from .resnext_optim import ResNeXt_Optim
 
 from .dwt_mobilev2 import DWT_MobileNetV2
 from .dwt_efficientnet import DWTEfficientNet
-from .SReT import SReT
-from .vovnet import VoVNet
 from .efficientnet_lite import EfficientNetLite
 from .att_efficientnet_lite import AttEfficientNetLite
+from .eca_efficientnet import ECAEfficientNet
 
 __all__ = [
     'RegNet', 'ResNet', 'ResNetV1d', 'ResNeXt', 'SSDVGG', 'HRNet',
@@ -34,5 +33,5 @@ __all__ = [
     'SwinTransformer', 'PyramidVisionTransformer',
     'PyramidVisionTransformerV2', 'EfficientNet',
     'ResNet_Optim', 'ResNeXt_Optim', 'DWT_MobileNetV2', 'DWTEfficientNet',
-    'EfficientNetLite', 'AttEfficientNetLite'
+    'EfficientNetLite', 'AttEfficientNetLite', 'ECAEfficientNet'
 ]

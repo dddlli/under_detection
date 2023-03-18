@@ -19,8 +19,9 @@ model = dict(
         norm_cfg=dict(
             type='BN', requires_grad=True, eps=1e-3, momentum=0.01),
         norm_eval=False,
-        init_cfg=dict(
-            type='Pretrained', prefix='backbone', checkpoint=checkpoint)),
+        # init_cfg=dict(
+        #     type='Pretrained', prefix='backbone', checkpoint=checkpoint)
+    ),
     neck=dict(
         in_channels=[40, 112, 320],
         start_level=0,

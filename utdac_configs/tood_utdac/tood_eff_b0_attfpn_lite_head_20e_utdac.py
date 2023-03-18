@@ -4,30 +4,30 @@ _base_ = [
 ]
 
 norm_cfg = dict(type='BN', requires_grad=True)
-# checkpoint = 'https://download.openmmlab.com/mmclassification/v0/mobilenet_v2/mobilenet_v2_batch256_imagenet_20200708-3b2dc3af.pth'  # noqa
-
+checkpoint = 'https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b0_3rdparty_8xb32-aa-advprop_in1k_20220119-26434485.pth'  # noqa
 model = dict(
     type='TOOD',
     backbone=dict(
-        type='MobileNetV2',
-        widen_factor=1,
-        out_indices=(1, 2, 4, 7),  # 24,32,96,1280
-        frozen_stages=1,
-        norm_cfg=dict(type='BN'),
-        act_cfg=dict(type='ReLU6'),
-        norm_eval=True,
-        # init_cfg=dict(
-        #     type='Pretrained', prefix='backbone', checkpoint=checkpoint)
+        type='EfficientNet',
+        arch='b0',
+        drop_path_rate=0.2,
+        out_indices=(3, 4, 5),
+        frozen_stages=0,
+        norm_cfg=dict(
+            type='BN', requires_grad=True, eps=1e-3, momentum=0.01),
+        norm_eval=False,
+        init_cfg=dict(
+            type='Pretrained', prefix='backbone.', checkpoint=checkpoint)
     ),
     neck=dict(
-        type='FPN',
-        in_channels=[24, 32, 96, 1280],
+        type='ATTFPN',
+        in_channels=[40, 112, 320],
         out_channels=256,
         start_level=0,
         add_extra_convs='on_output',
         num_outs=5),
     bbox_head=dict(
-        type='TOODHead',
+        type='LITETOODHead',
         num_classes=4,
         in_channels=256,
         stacked_convs=6,

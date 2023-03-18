@@ -4,25 +4,24 @@ _base_ = [
 ]
 
 norm_cfg = dict(type='BN', requires_grad=True)
-checkpoint = 'https://download.openmmlab.com/mmclassification/v0/mobilenet_v2/mobilenet_v2_batch256_imagenet_20200708-3b2dc3af.pth'  # noqa
 
 # model settings
 model = dict(
     type='FasterRCNN',
     backbone=dict(
-        type='MobileNetV2',
-        widen_factor=1,
-        out_indices=(1, 2, 4, 7),  # 24,32,96,1280
+        type='ResNet',
+        depth=18,
+        num_stages=4,
+        out_indices=(0, 1, 2, 3),
         frozen_stages=1,
-        norm_cfg=dict(type='BN'),
-        act_cfg=dict(type='ReLU6'),
+        norm_cfg=dict(type='BN', requires_grad=True),
         norm_eval=True,
-        # init_cfg=dict(
-        #     type='Pretrained', prefix='backbone', checkpoint=checkpoint)
+        style='pytorch',
+        # init_cfg=dict(type='Pretrained', checkpoint='torchvision://resnet18')
     ),
     neck=dict(
         type='FPN',
-        in_channels=[24, 32, 96, 1280],
+        in_channels=[64, 128, 256, 512],
         out_channels=256,
         num_outs=5),
     rpn_head=dict(
