@@ -28,6 +28,7 @@ from .deepwiseconv import DeepWiseConv
 
 from .eca import eca_layer
 from .eca_inverted_residual import ECA_InvertedResidual
+from .aspp import ASPPConv, ASPPPooling
 
 __all__ = [
     'ResLayer', 'gaussian_radius', 'gen_gaussian_target',
@@ -41,5 +42,5 @@ __all__ = [
     'preprocess_panoptic_gt', 'DyReLU',
     'get_uncertain_point_coords_with_randomness', 'get_uncertainty',
     'iAFF', 'AFF', 'DAF', 'MS_CAM', 'DWTPool2d', 'DeepWiseConv', 'eca_layer',
-    'ECA_InvertedResidual'
+    'ECA_InvertedResidual', 'ASPPConv', 'ASPPPooling'
 ]

@@ -7,7 +7,7 @@ from mmcv.runner import BaseModule
 
 from .se_layer import SELayer
 from .eca import eca_layer
-
+from .aspp import ASPPConv, ASPPPooling
 class ECA_InvertedResidual(BaseModule):
     """Inverted Residual Block.
 
@@ -78,6 +78,9 @@ class ECA_InvertedResidual(BaseModule):
                 conv_cfg=conv_cfg,
                 norm_cfg=norm_cfg,
                 act_cfg=act_cfg)
+
+        self.eca = eca_layer(mid_channels, kernel_size)
+
         self.depthwise_conv = ConvModule(
             in_channels=mid_channels,
             out_channels=mid_channels,
@@ -92,7 +95,7 @@ class ECA_InvertedResidual(BaseModule):
         if self.with_se:
             self.se = SELayer(**se_cfg)
 
-        self.eca = eca_layer(mid_channels, kernel_size)
+        # self.eca = eca_layer(mid_channels, kernel_size)
 
         self.linear_conv = ConvModule(
             in_channels=mid_channels,
@@ -104,6 +107,11 @@ class ECA_InvertedResidual(BaseModule):
             norm_cfg=norm_cfg,
             act_cfg=None)
 
+        # self.linear_conv = ASPPPooling(
+        #     in_channels=mid_channels,
+        #     out_channels=out_channels,
+        # )
+
     def forward(self, x):
 
         def _inner_forward(x):
@@ -112,12 +120,14 @@ class ECA_InvertedResidual(BaseModule):
             if self.with_expand_conv:
                 out = self.expand_conv(out)
 
+            out = self.eca(out)
+
             out = self.depthwise_conv(out)
 
             if self.with_se:
                 out = self.se(out)
 
-            out = self.eca(out)
+            # out = self.eca(out)
 
             out = self.linear_conv(out)
 

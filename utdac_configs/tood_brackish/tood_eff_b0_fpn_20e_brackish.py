@@ -4,13 +4,13 @@ _base_ = [
 ]
 
 norm_cfg = dict(type='BN', requires_grad=True)
-checkpoint = 'https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b3_3rdparty_8xb32-aa-advprop_in1k_20220119-53b41118.pth'  # noqa
+checkpoint = 'https://download.openmmlab.com/mmclassification/v0/efficientnet/efficientnet-b0_3rdparty_8xb32-aa-advprop_in1k_20220119-26434485.pth'  # noqa
 
 model = dict(
     type='TOOD',
     backbone=dict(
-        type='EfficientNet',
-        arch='b3',
+        type='ECAEfficientNet',
+        arch='b0',
         drop_path_rate=0.2,
         out_indices=(3, 4, 5),
         frozen_stages=0,
@@ -18,11 +18,13 @@ model = dict(
             type='BN', requires_grad=True, eps=1e-3, momentum=0.01),
         norm_eval=False,
         init_cfg=dict(
-            type='Pretrained', prefix='backbone', checkpoint=checkpoint)),
+            type='Pretrained', prefix='backbone', checkpoint=checkpoint)
+    ),
     neck=dict(
-        type='FSPAFPN',
-        in_channels=[48, 136, 384],
+        type='FPN',
+        in_channels=[40, 112, 320],
         out_channels=256,
+        start_level=0,
         add_extra_convs='on_output',
         num_outs=5),
     bbox_head=dict(

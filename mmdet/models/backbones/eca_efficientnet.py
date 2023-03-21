@@ -10,7 +10,7 @@ from mmcv.cnn.bricks import ConvModule, DropPath
 from mmcv.runner import BaseModule, Sequential
 
 from ..builder import BACKBONES
-from ..utils import InvertedResidual, SELayer, make_divisible, eca_layer, ECA_InvertedResidual
+from ..utils import InvertedResidual, SELayer, make_divisible, eca_layer, ECA_InvertedResidual, ASPPConv
 
 
 class EdgeResidual(BaseModule):
@@ -65,15 +65,20 @@ class EdgeResidual(BaseModule):
         if self.with_se:
             assert isinstance(se_cfg, dict)
 
-        self.conv1 = ConvModule(
+        # self.conv1 = ConvModule(
+        #     in_channels=in_channels,
+        #     out_channels=mid_channels,
+        #     kernel_size=kernel_size,
+        #     stride=1,
+        #     padding=kernel_size // 2,
+        #     conv_cfg=conv_cfg,
+        #     norm_cfg=norm_cfg,
+        #     act_cfg=act_cfg)
+        self.conv1 = ASPPConv(
             in_channels=in_channels,
             out_channels=mid_channels,
-            kernel_size=kernel_size,
-            stride=1,
-            padding=kernel_size // 2,
-            conv_cfg=conv_cfg,
-            norm_cfg=norm_cfg,
-            act_cfg=act_cfg)
+            dilation=6
+        )
 
         if self.with_se:
             self.se = SELayer(**se_cfg)
@@ -200,18 +205,18 @@ class ECAEfficientNet(BaseModule):
               [[3, 16, 4, 1, 1, 0]],
               [[3, 24, 4, 2, 6, 0],
                [3, 24, 4, 1, 6, 0]],
-              [[5, 40, 4, 2, 6, 0],
-               [5, 40, 4, 1, 6, 0]],
+              [[5, 40, 0, 2, 6, 0],
+               [5, 40, 0, 1, 6, 0]],
               [[3, 80, 4, 2, 6, 0],
                [3, 80, 4, 1, 6, 0],
                [3, 80, 4, 1, 6, 0],
-               [5, 112, 4, 1, 6, 0],
-               [5, 112, 4, 1, 6, 0],
-               [5, 112, 4, 1, 6, 0]],
-              [[5, 192, 4, 2, 6, 0],
-               [5, 192, 4, 1, 6, 0],
-               [5, 192, 4, 1, 6, 0],
-               [5, 192, 4, 1, 6, 0],
+               [5, 112, 0, 1, 6, 0],
+               [5, 112, 0, 1, 6, 0],
+               [5, 112, 0, 1, 6, 0]],
+              [[5, 192, 0, 2, 6, 0],
+               [5, 192, 0, 1, 6, 0],
+               [5, 192, 0, 1, 6, 0],
+               [5, 192, 0, 1, 6, 0],
                [3, 320, 4, 1, 6, 0]],
               [[1, 1280, 0, 1, 0, -1]]
               ],
@@ -314,7 +319,15 @@ class ECAEfficientNet(BaseModule):
                 padding=block_cfg_0[0] // 2,
                 conv_cfg=self.conv_cfg,
                 norm_cfg=self.norm_cfg,
-                act_cfg=self.act_cfg))
+                act_cfg=self.act_cfg)
+        )
+        # self.layers.append(
+        #     ASPPConv(
+        #         in_channels=3,
+        #         out_channels=self.in_channels,
+        #         dilation=6
+        #     )
+        # )
         self.make_layer()
         # Avoid building unused layers in mmdetection.
         if len(self.layers) < max(self.out_indices) + 1:
@@ -394,6 +407,7 @@ class ECAEfficientNet(BaseModule):
                         # the logic of InvertedResidual with mmcls.
                         with_expand_conv=(mid_channels != self.in_channels)))
                 self.in_channels = out_channels
+                # self.eca = eca_layer(out_channels, kernel_size)
                 block_idx += 1
             self.layers.append(Sequential(*layer))
 

@@ -4,24 +4,24 @@ _base_ = [
 ]
 
 norm_cfg = dict(type='BN', requires_grad=True)
-# checkpoint = 'https://download.openmmlab.com/mmclassification/v0/mobilenet_v2/mobilenet_v2_batch256_imagenet_20200708-3b2dc3af.pth'  # noqa
+checkpoint = 'https://download.openmmlab.com/mmclassification/v0/mobilenet_v2/mobilenet_v2_batch256_imagenet_20200708-3b2dc3af.pth'  # noqa
 
 model = dict(
     type='TOOD',
     backbone=dict(
         type='MobileNetV2',
         widen_factor=1,
-        out_indices=(1, 2, 4, 7),  # 24,32,96,1280
+        out_indices=(2, 4, 7),  # 24,32,96,1280
         frozen_stages=1,
         norm_cfg=dict(type='BN'),
         act_cfg=dict(type='ReLU6'),
         norm_eval=True,
-        # init_cfg=dict(
-        #     type='Pretrained', prefix='backbone', checkpoint=checkpoint)
+        init_cfg=dict(
+            type='Pretrained', prefix='backbone', checkpoint=checkpoint)
     ),
     neck=dict(
         type='FPN',
-        in_channels=[24, 32, 96, 1280],
+        in_channels=[32, 96, 1280],
         out_channels=256,
         start_level=0,
         add_extra_convs='on_output',
